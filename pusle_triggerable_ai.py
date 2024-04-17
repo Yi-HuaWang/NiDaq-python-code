@@ -2,7 +2,7 @@ import nidaqmx
 import nidaqmx.constants as cst
 import matplotlib.pyplot as plt
 import numpy as np
-
+### the content is from https://forums.ni.com/t5/Example-Code/Finite-Retriggerable-Analog-Input-Using-LabVIEW-with-DAQmx/ta-p/3505158
 sample_time = 0.05  # units = seconds
 s_freq = 1000
 num_pusles = 10
@@ -20,12 +20,12 @@ minValue = -5
 
 Reader = nidaqmx.Task()
 counter = nidaqmx.Task()
-
+## trigger channel: trigger tabor to sweep frequency 
 counter.co_channels.add_co_pulse_chan_freq("/Dev3/ctr0", freq = s_freq)
 counter.timing.cfg_implicit_timing(sample_mode=sampleMode_c, samps_per_chan=num_samples)
 counter.triggers.start_trigger.cfg_dig_edge_start_trig("/Dev3/PFI0", trigger_edge=cst.Edge.RISING)
 counter.triggers.start_trigger.retriggerable = True
-
+## analog input : measure voltage from Photodiode 
 Reader.ai_channels.add_ai_voltage_chan("/Dev3/ai0", terminal_config=diffTerminal,
 max_val=maxValue, min_val=minValue, units = Volts)#name_to_assign_to_channel="mySignal",
 Reader.ai_channels.ai_impedance = cst.Impedance1.FIFTY_OHMS
